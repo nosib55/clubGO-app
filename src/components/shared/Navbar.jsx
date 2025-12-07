@@ -1,103 +1,79 @@
 import { Link, NavLink } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth();
-  const [role, setRole] = useState("");
+  const { user, logOut } = useAuth() || {};
 
-  // FETCH USER ROLE
-  useEffect(() => {
-    if (user?.email) {
-      axios
-        .get(`${import.meta.env.VITE_API_URL}/users/role/${user.email}`)
-        .then((res) => setRole(res.data.role))
-        .catch(() => setRole("member"));
-    }
-  }, [user]);
+  const handleLogout = () => {
+    logOut().catch(() => {});
+  };
 
-  // DASHBOARD LINK BASED ON ROLE
-  const dashboardPath = {
-    admin: "/dashboard/admin",
-    manager: "/dashboard/manager",
-    member: "/dashboard/member",
-  }[role];
+  const navLinks = (
+    <>
+      <li>
+        <NavLink to="/">Home</NavLink>
+      </li>
+      <li>
+        <NavLink to="/clubs">Clubs</NavLink>
+      </li>
+      <li>
+        <NavLink to="/events">Events</NavLink>
+      </li>
+    </>
+  );
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-      {/* Brand Logo */}
-      <Link to="/" className="text-2xl font-bold text-blue-600">
-        CLUB GO
-      </Link>
+    <div className="bg-base-100 shadow">
+      <div className="navbar max-w-6xl mx-auto">
+        <div className="navbar-start">
+          <Link to="/" className="font-bold text-xl">
+            ClubSphere
+          </Link>
+        </div>
 
-      {/* Desktop Menu */}
-      <div className="flex items-center gap-6">
-        <NavLink
-          to="/"
-          className="hover:text-blue-600 font-medium"
-        >
-          Home
-        </NavLink>
+        <div className="navbar-center hidden md:flex">
+          <ul className="menu menu-horizontal px-1">{navLinks}</ul>
+        </div>
 
-        <NavLink
-          to="/clubs"
-          className="hover:text-blue-600 font-medium"
-        >
-          Clubs
-        </NavLink>
-
-        {/* If NOT logged in */}
-        {!user && (
-          <>
-            <NavLink
-              to="/login"
-              className="hover:text-blue-600 font-medium"
-            >
-              Login
-            </NavLink>
-
-            <NavLink
-              to="/register"
-              className="hover:text-blue-600 font-medium"
-            >
-              Register
-            </NavLink>
-          </>
-        )}
-
-        {/* If logged in */}
-        {user && (
-          <>
-            {/* Dashboard Link */}
-            <NavLink
-              to={dashboardPath}
-              className="hover:text-blue-600 font-medium"
-            >
-              Dashboard
-            </NavLink>
-
-            {/* Profile Image */}
-            {user?.photoURL ? (
-              <img
-                src={user.photoURL}
-                className="w-10 h-10 rounded-full object-cover border"
-              />
-            ) : (
-              <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
-            )}
-
-            {/* Logout Button */}
-            <button
-              onClick={logOut}
-              className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-            >
-              Logout
-            </button>
-          </>
-        )}
+        <div className="navbar-end space-x-3">
+          {user ? (
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img
+                    src={user.photoURL || "https://i.ibb.co/PGv8ZzG/user.png"}
+                    alt="user"
+                  />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li className="px-2 py-1 text-xs opacity-70">
+                  {user.displayName || user.email}
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <button onClick={handleLogout}>Logout</button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-sm btn-outline">
+                Login
+              </Link>
+              <Link to="/register" className="btn btn-sm btn-primary">
+                Register
+              </Link>
+            </>
+          )}
+        </div>
       </div>
-    </nav>
+    </div>
   );
 };
 

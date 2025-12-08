@@ -1,92 +1,85 @@
 import { NavLink, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import useRole from "../hooks/useRole";
+import { useState } from "react";
+
+// Icons
+import { FaUsers, FaHome, FaMoneyCheckAlt, FaUsersCog } from "react-icons/fa";
+import { MdDashboardCustomize } from "react-icons/md";
+import { RiAdminLine } from "react-icons/ri";
+import { GiOfficeChair } from "react-icons/gi";
 
 const DashboardLayout = () => {
   const { user } = useAuth();
-
-  // future: role from backend → useRole hook
-  const role = "member"; // temporary, later replace
+  const { role } = useRole();
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex">
+
       {/* Sidebar */}
-      <aside className="w-60 bg-base-200 p-4 space-y-4 hidden md:block">
-        <h2 className="font-bold text-lg mb-4">Dashboard</h2>
+      <aside
+        className={`w-64 bg-base-200 p-6 space-y-5 shadow-md 
+        ${open ? "block" : "hidden"} md:block`}
+      >
+        <h2 className="font-bold text-xl text-center mb-4 flex items-center justify-center gap-2">
+          <MdDashboardCustomize />
+          Dashboard
+        </h2>
 
+        {/* ADMIN MENU */}
         {role === "admin" && (
-          <ul className="menu">
-            <li>
-              <NavLink to="/dashboard/admin">Admin Home</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/admin/users">Manage Users</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/admin/clubs">Manage Clubs</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/admin/payments">Payments</NavLink>
-            </li>
+          <ul className="menu text-lg">
+            <li><NavLink to="/dashboard/admin"><RiAdminLine /> Admin Home</NavLink></li>
+            <li><NavLink to="/dashboard/admin/users"><FaUsers /> Manage Users</NavLink></li>
+            <li><NavLink to="/dashboard/admin/clubs"><GiOfficeChair /> Manage Clubs</NavLink></li>
+            <li><NavLink to="/dashboard/admin/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
           </ul>
         )}
 
-        {role === "clubManager" && (
-          <ul className="menu">
-            <li>
-              <NavLink to="/dashboard/manager">Manager Home</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/manager/clubs">My Clubs</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/manager/events">Events</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/manager/registrations">
-                Registrations
-              </NavLink>
-            </li>
+        {/* MANAGER MENU */}
+        {role === "manager" && (
+          <ul className="menu text-lg">
+            <li><NavLink to="/dashboard/manager"><FaHome /> Manager Home</NavLink></li>
+            <li><NavLink to="/dashboard/manager/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
+            <li><NavLink to="/dashboard/manager/events"><FaUsersCog /> Events</NavLink></li>
+            <li><NavLink to="/dashboard/manager/registrations"><FaUsers /> Registrations</NavLink></li>
           </ul>
         )}
 
+        {/* MEMBER MENU */}
         {role === "member" && (
-          <ul className="menu">
-            <li>
-              <NavLink to="/dashboard/member">Member Home</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/member/clubs">My Clubs</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/member/events">My Events</NavLink>
-            </li>
-            <li>
-              <NavLink to="/dashboard/member/payments">
-                Payment History
-              </NavLink>
-            </li>
+          <ul className="menu text-lg">
+            <li><NavLink to="/dashboard/member"><FaHome /> Member Home</NavLink></li>
+            <li><NavLink to="/dashboard/member/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
+            <li><NavLink to="/dashboard/member/events"><FaUsersCog /> My Events</NavLink></li>
+            <li><NavLink to="/dashboard/member/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
           </ul>
         )}
 
         <hr className="my-4" />
 
-        <ul className="menu">
-          <li>
-            <NavLink to="/">Back to Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/clubs">Browse Clubs</NavLink>
-          </li>
+        <ul className="menu text-lg">
+          <li><NavLink to="/"><FaHome /> Home</NavLink></li>
+          <li><NavLink to="/clubs"><FaUsers /> Browse Clubs</NavLink></li>
         </ul>
       </aside>
 
-      {/* Main content */}
+      {/* Main Content */}
       <main className="flex-1 p-4">
-        <div className="mb-4">
-          <p className="text-sm opacity-70">
-            Logged in as: {user?.displayName || user?.email}
-          </p>
-        </div>
+
+        {/* Mobile Button */}
+        <button
+          className="md:hidden mb-4 btn btn-outline btn-sm"
+          onClick={() => setOpen(!open)}
+        >
+          Menu
+        </button>
+
+        <p className="text-sm opacity-70 mb-2">
+          Logged in as: {user?.displayName || user?.email}
+        </p>
+
         <Outlet />
       </main>
     </div>

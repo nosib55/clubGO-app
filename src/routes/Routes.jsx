@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // Layouts
 import MainLayout from "../layouts/MainLayout";
@@ -18,12 +18,18 @@ import EventDetails from "../pages/Events/EventDetails";
 import AdminHome from "../pages/dashboard/admin/AdminHome";
 import ManagerHome from "../pages/dashboard/manager/ManagerHome";
 import MemberHome from "../pages/dashboard/member/MemberHome";
+import ManageUsers from "../pages/dashboard/admin/ManageUsers";
+import ManageClubs from "../pages/dashboard/admin/ManageClubs";
+import AdminPayments from "../pages/dashboard/admin/AdminPayments";
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import ManagerRoute from "./ManagerRoute";
+import MemberRoute from "./MemberRoute";
 
 const router = createBrowserRouter([
-  // PUBLIC ROUTES
+  // PUBLIC
   {
     path: "/",
     element: <MainLayout />,
@@ -32,7 +38,6 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-
       { path: "/clubs", element: <Clubs /> },
 
       {
@@ -57,7 +62,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // DASHBOARD ROUTES (Private)
+  // DASHBOARD (Private)
   {
     path: "/dashboard",
     element: (
@@ -65,18 +70,64 @@ const router = createBrowserRouter([
         <DashboardLayout />
       </PrivateRoute>
     ),
+
     children: [
-      // Default Dashboard → Member
-      { index: true, element: <MemberHome /> },
+      // Default
+      { index: true, element: <Navigate to="member" replace /> },
 
-      // Admin
-      { path: "admin", element: <AdminHome /> },
+      // ADMIN ROUTES
+      {
+        path: "admin",
+        element: (
+          <AdminRoute>
+            <AdminHome />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/clubs",
+        element: (
+          <AdminRoute>
+            <ManageClubs />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/payments",
+        element: (
+          <AdminRoute>
+            <AdminPayments />
+          </AdminRoute>
+        ),
+      },
 
-      // Club Manager
-      { path: "manager", element: <ManagerHome /> },
+      // MANAGER ROUTES
+      {
+        path: "manager",
+        element: (
+          <ManagerRoute>
+            <ManagerHome />
+          </ManagerRoute>
+        ),
+      },
 
-      // Member
-      { path: "member", element: <MemberHome /> },
+      // MEMBER ROUTES
+      {
+        path: "member",
+        element: (
+          <MemberRoute>
+            <MemberHome />
+          </MemberRoute>
+        ),
+      },
     ],
   },
 ]);

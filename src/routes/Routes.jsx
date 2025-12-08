@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 
 // Layouts
 import MainLayout from "../layouts/MainLayout";
@@ -21,15 +21,17 @@ import MemberHome from "../pages/dashboard/member/MemberHome";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import ManageClubs from "../pages/dashboard/admin/ManageClubs";
 import AdminPayments from "../pages/dashboard/admin/AdminPayments";
+import ManageManagerRequests from "../pages/dashboard/admin/ManageManagerRequests"; // NEW
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
 import MemberRoute from "./MemberRoute";
+import CreateClub from "../pages/dashboard/manager/CreateClub";
 
 const router = createBrowserRouter([
-  // PUBLIC
+  // =============== PUBLIC ROUTES ===============
   {
     path: "/",
     element: <MainLayout />,
@@ -62,7 +64,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // DASHBOARD (Private)
+  // =============== DASHBOARD ROUTES ===============
   {
     path: "/dashboard",
     element: (
@@ -72,10 +74,13 @@ const router = createBrowserRouter([
     ),
 
     children: [
-      // Default
-      { index: true, element: <Navigate to="member" replace /> },
+      // Default Dashboard Redirect → Based on Role
+      {
+        index: true,
+        element: <MemberHome />, // member is default
+      },
 
-      // ADMIN ROUTES
+      // ========== ADMIN ROUTES ==========
       {
         path: "admin",
         element: (
@@ -108,8 +113,16 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      {
+        path: "admin/requests", // ⭐ NEW MANAGER REQUEST PAGE
+        element: (
+          <AdminRoute>
+            <ManageManagerRequests />
+          </AdminRoute>
+        ),
+      },
 
-      // MANAGER ROUTES
+      // ========== MANAGER ROUTES ==========
       {
         path: "manager",
         element: (
@@ -117,9 +130,16 @@ const router = createBrowserRouter([
             <ManagerHome />
           </ManagerRoute>
         ),
-      },
+      },{
+  path: "manager/create-club",
+  element: (
+    <ManagerRoute>
+      <CreateClub />
+    </ManagerRoute>
+  ),
+},
 
-      // MEMBER ROUTES
+      // ========== MEMBER ROUTES ==========
       {
         path: "member",
         element: (
@@ -133,3 +153,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+  

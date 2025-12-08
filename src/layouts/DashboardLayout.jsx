@@ -16,8 +16,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen flex">
-
-      {/* Sidebar */}
+      {/* SIDEBAR */}
       <aside
         className={`w-64 bg-base-200 p-6 space-y-5 shadow-md 
         ${open ? "block" : "hidden"} md:block`}
@@ -27,48 +26,59 @@ const DashboardLayout = () => {
           Dashboard
         </h2>
 
-        {/* ADMIN MENU */}
+        {/* ================= ADMIN MENU ================= */}
         {role === "admin" && (
           <ul className="menu text-lg">
             <li><NavLink to="/dashboard/admin"><RiAdminLine /> Admin Home</NavLink></li>
             <li><NavLink to="/dashboard/admin/users"><FaUsers /> Manage Users</NavLink></li>
             <li><NavLink to="/dashboard/admin/clubs"><GiOfficeChair /> Manage Clubs</NavLink></li>
             <li><NavLink to="/dashboard/admin/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
+
+            {/* ⭐ NEW: Manager Requests */}
+            <li><NavLink to="/dashboard/admin/requests"><FaUsersCog /> Manager Requests</NavLink></li>
           </ul>
         )}
 
-        {/* MANAGER MENU */}
+        {/* ================= MANAGER MENU ================= */}
         {role === "manager" && (
           <ul className="menu text-lg">
             <li><NavLink to="/dashboard/manager"><FaHome /> Manager Home</NavLink></li>
             <li><NavLink to="/dashboard/manager/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
             <li><NavLink to="/dashboard/manager/events"><FaUsersCog /> Events</NavLink></li>
             <li><NavLink to="/dashboard/manager/registrations"><FaUsers /> Registrations</NavLink></li>
+            <li><NavLink to="/dashboard/manager/create-club"><GiOfficeChair /> Create Club</NavLink></li>
           </ul>
         )}
 
-        {/* MEMBER MENU */}
+        {/* ================= MEMBER MENU ================= */}
         {role === "member" && (
           <ul className="menu text-lg">
             <li><NavLink to="/dashboard/member"><FaHome /> Member Home</NavLink></li>
             <li><NavLink to="/dashboard/member/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
             <li><NavLink to="/dashboard/member/events"><FaUsersCog /> My Events</NavLink></li>
             <li><NavLink to="/dashboard/member/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
+
+            {/* ⭐ MEMBER → Request Manager */}
+            <li>
+              <NavLink to="/dashboard/member?request=manager">
+                <FaUsersCog /> Request Manager Role
+              </NavLink>
+            </li>
           </ul>
         )}
 
         <hr className="my-4" />
 
+        {/* PUBLIC LINKS */}
         <ul className="menu text-lg">
           <li><NavLink to="/"><FaHome /> Home</NavLink></li>
           <li><NavLink to="/clubs"><FaUsers /> Browse Clubs</NavLink></li>
         </ul>
       </aside>
 
-      {/* Main Content */}
+      {/* MAIN CONTENT */}
       <main className="flex-1 p-4">
-
-        {/* Mobile Button */}
+        {/* Mobile Menu Button */}
         <button
           className="md:hidden mb-4 btn btn-outline btn-sm"
           onClick={() => setOpen(!open)}

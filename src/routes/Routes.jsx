@@ -21,17 +21,20 @@ import MemberHome from "../pages/dashboard/member/MemberHome";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import ManageClubs from "../pages/dashboard/admin/ManageClubs";
 import AdminPayments from "../pages/dashboard/admin/AdminPayments";
-import ManageManagerRequests from "../pages/dashboard/admin/ManageManagerRequests"; // NEW
+import ManageManagerRequests from "../pages/dashboard/admin/ManageManagerRequests";
+
+// Manager Pages
+import CreateClub from "../pages/dashboard/manager/CreateClub";
+import MyClubs from "../pages/dashboard/manager/MyClubs";   
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
 import MemberRoute from "./MemberRoute";
-import CreateClub from "../pages/dashboard/manager/CreateClub";
 
 const router = createBrowserRouter([
-  // =============== PUBLIC ROUTES ===============
+  // ================= PUBLIC ROUTES =================
   {
     path: "/",
     element: <MainLayout />,
@@ -40,8 +43,8 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-      { path: "/clubs", element: <Clubs /> },
 
+      { path: "/clubs", element: <Clubs /> },
       {
         path: "/clubs/:id",
         element: (
@@ -52,7 +55,6 @@ const router = createBrowserRouter([
       },
 
       { path: "/events", element: <Events /> },
-
       {
         path: "/events/:id",
         element: (
@@ -64,7 +66,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // =============== DASHBOARD ROUTES ===============
+  // ================= DASHBOARD ROUTES =================
   {
     path: "/dashboard",
     element: (
@@ -74,13 +76,10 @@ const router = createBrowserRouter([
     ),
 
     children: [
-      // Default Dashboard Redirect → Based on Role
-      {
-        index: true,
-        element: <MemberHome />, // member is default
-      },
+      // Default dashboard → member
+      { index: true, element: <MemberHome /> },
 
-      // ========== ADMIN ROUTES ==========
+      // ========== ⭐ ADMIN ROUTES ==========
       {
         path: "admin",
         element: (
@@ -114,7 +113,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "admin/requests", // ⭐ NEW MANAGER REQUEST PAGE
+        path: "admin/requests",
         element: (
           <AdminRoute>
             <ManageManagerRequests />
@@ -122,7 +121,7 @@ const router = createBrowserRouter([
         ),
       },
 
-      // ========== MANAGER ROUTES ==========
+      // ========== ⭐ MANAGER ROUTES ==========
       {
         path: "manager",
         element: (
@@ -130,16 +129,25 @@ const router = createBrowserRouter([
             <ManagerHome />
           </ManagerRoute>
         ),
-      },{
-  path: "manager/create-club",
-  element: (
-    <ManagerRoute>
-      <CreateClub />
-    </ManagerRoute>
-  ),
-},
+      },
+      {
+        path: "manager/create-club",
+        element: (
+          <ManagerRoute>
+            <CreateClub />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "manager/clubs",
+        element: (
+          <ManagerRoute>
+            <MyClubs />
+          </ManagerRoute>
+        ),
+      },
 
-      // ========== MEMBER ROUTES ==========
+      // ========== ⭐ MEMBER ROUTES ==========
       {
         path: "member",
         element: (
@@ -153,4 +161,3 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
-  

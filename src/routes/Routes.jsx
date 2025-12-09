@@ -10,7 +10,6 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Clubs from "../pages/Clubs/Clubs";
-import ClubDetails from "../pages/Clubs/ClubDetails";
 import Events from "../pages/Events/Events";
 import EventDetails from "../pages/Events/EventDetails";
 
@@ -32,6 +31,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
 import MemberRoute from "./MemberRoute";
+import CreateEvent from "../pages/dashboard/manager/CreateEvent";
 
 const router = createBrowserRouter([
   // ================= PUBLIC ROUTES =================
@@ -45,14 +45,7 @@ const router = createBrowserRouter([
       { path: "/register", element: <Register /> },
 
       { path: "/clubs", element: <Clubs /> },
-      {
-        path: "/clubs/:id",
-        element: (
-          <PrivateRoute>
-            <ClubDetails />
-          </PrivateRoute>
-        ),
-      },
+      
 
       { path: "/events", element: <Events /> },
       {
@@ -145,7 +138,15 @@ const router = createBrowserRouter([
             <MyClubs />
           </ManagerRoute>
         ),
-      },
+      },{
+  path: "manager/create-event",
+  element: (
+    <ManagerRoute>
+      <CreateEvent />
+    </ManagerRoute>
+  ),
+},
+
 
       // ========== ⭐ MEMBER ROUTES ==========
       {

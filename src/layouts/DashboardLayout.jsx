@@ -47,6 +47,7 @@ const DashboardLayout = () => {
             <li><NavLink to="/dashboard/manager/events"><FaUsersCog /> Events</NavLink></li>
             <li><NavLink to="/dashboard/manager/registrations"><FaUsers /> Registrations</NavLink></li>
             <li><NavLink to="/dashboard/manager/create-club"><GiOfficeChair /> Create Club</NavLink></li>
+            <li><NavLink to="/dashboard/manager/create-event"> ➕ Create Event</NavLink></li>
           </ul>
         )}
 

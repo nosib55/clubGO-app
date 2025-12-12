@@ -2,99 +2,179 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ClubPaymentForm from "../../components/ClubPaymentForm";
+import EventPaymentForm from "../../components/EventPaymentForm";
 
-const ClubDetails = () => {
+const EventDetails = () => {
   const { id } = useParams();
-  const [club, setClub] = useState(null);
+  const [event, setEvent] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  const [joined, setJoined] = useState(false);
-  const [expiry, setExpiry] = useState(null);
+  const [regCount, setRegCount] = useState(0);
+
+  const [alreadyJoined, setAlreadyJoined] = useState(false);
+  const [alreadyPaid, setAlreadyPaid] = useState(false);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/clubs/${id}`)
-      .then(res => setClub(res.data));
+    const load = async () => {
+      setLoading(true);
+      try {
+        const eventRes = await axios.get(
+          `${import.meta.env.VITE_API_URL}/events/${id}`
+        );
+        setEvent(eventRes.data);
 
-    // check membership
-    axios.get(`${import.meta.env.VITE_API_URL}/member/clubs`, { withCredentials: true })
-      .then(res => {
-        const found = res.data.find(c => c._id === id);
-        if (found) {
-          setJoined(true);
-          setExpiry(found.expiryDate);
+        try {
+          const regs = await axios.get(
+            `${import.meta.env.VITE_API_URL}/manager/events/registrations/${id}`,
+            { withCredentials: true }
+          );
+          setRegCount(regs.data.length);
+        } catch {
+          setRegCount(0);
         }
-      });
+
+        const statusRes = await axios.get(
+          `${import.meta.env.VITE_API_URL}/events/${id}/my-status`,
+          { withCredentials: true }
+        );
+
+        setAlreadyJoined(statusRes.data.joined);
+        setAlreadyPaid(statusRes.data.paid);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
   }, [id]);
 
-  const joinFree = async () => {
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_URL}/clubs/join`,
-      { clubId: id },
-      { withCredentials: true }
-    );
+  const joinFreeEvent = async () => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/events/join`,
+        { eventId: id },
+        { withCredentials: true }
+      );
 
-    Swal.fire("Success!", "You joined the club!", "success");
-    setJoined(true);
+      if (res.data.message === "Already registered") {
+        setAlreadyJoined(true);
+        return Swal.fire("Already Registered", "You are in the event!", "info");
+      }
+
+      Swal.fire("Success!", "You joined the event!", "success");
+      setAlreadyJoined(true);
+      setRegCount((c) => c + 1);
+    } catch (err) {
+      Swal.fire("Error", err.response?.data?.message, "error");
+    }
   };
 
   const startPayment = async () => {
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_URL}/clubs/create-payment-intent`,
-      { clubId: id },
-      { withCredentials: true }
-    );
-
-    if (res.data.alreadyJoined) {
-      Swal.fire("Already Joined", "You are already a member!", "info");
-      return;
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/events/create-payment-intent`,
+        { eventId: id },
+        { withCredentials: true }
+      );
+      setClientSecret(res.data.clientSecret);
+    } catch (err) {
+      Swal.fire("Payment Error", err.response?.data?.message, "error");
     }
-
-    setClientSecret(res.data.clientSecret);
   };
 
-  if (!club) return <p>Loading...</p>;
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (!event) return <p className="text-center mt-10">Event not found</p>;
 
   return (
     <div className="p-10 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold">{club.clubName}</h1>
+      <h1 className="text-3xl font-bold">{event.title}</h1>
 
-      <p className="mt-2">{club.description}</p>
+      <p className="mt-3 text-gray-600">{event.description}</p>
 
-      <p className="mt-2">Members: {club.memberCount ?? 0}</p>
-
-      <p className="mt-2">
-        Fee: {club.membershipFee > 0 ? `$${club.membershipFee}` : "Free"}
+      <p className="mt-3 font-bold text-black">
+        Max Attendees: {event.maxAttendees ?? "Unlimited"}
       </p>
 
-      {joined && (
-        <p className="mt-3 text-green-600 font-bold">
-          ✔ You are a member {expiry && `(Expires: ${new Date(expiry).toLocaleDateString()})`}
-        </p>
-      )}
+      <p className="mt-3">
+        <strong>Date:</strong> {event.eventDate}
+      </p>
 
-      {clientSecret && !joined ? (
-        <ClubPaymentForm
+      <p className="mt-1">
+        <strong>Location:</strong> {event.location}
+      </p>
+
+      <p className="mt-3">
+        <strong>Fee:</strong>{" "}
+        {event.isPaid ? (
+          <span className="text-red-600 font-bold">${event.eventFee}</span>
+        ) : (
+          <span className="text-green-600 font-bold">Free</span>
+        )}
+      </p>
+
+      <p className="mt-3 text-lg">
+        <strong>Total Registered:</strong> {regCount}
+      </p>
+
+      <div className="mt-3 flex gap-3">
+        {alreadyPaid && (
+          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
+            ✔ Payment Complete — You are in this event
+          </span>
+        )}
+
+        {alreadyJoined && !alreadyPaid && (
+          <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full">
+            ✔ Registered
+          </span>
+        )}
+      </div>
+
+      {alreadyPaid ? (
+        <p className="mt-4 text-green-700 font-semibold text-lg">
+          🎉 You are fully registered for this event!
+        </p>
+      ) : clientSecret ? (
+        <EventPaymentForm
           clientSecret={clientSecret}
-          clubId={id}
-          amount={club.membershipFee * 100}
+          eventId={id}
+          amount={event.eventFee * 100}
           onSuccess={() => {
-            Swal.fire("Success!", "Payment completed!", "success");
-            setJoined(true);
+            Swal.fire("Success!", "Payment complete!", "success");
+            setAlreadyPaid(true);
+            setAlreadyJoined(true);
+            setRegCount((c) => c + 1);
+            setClientSecret("");
           }}
         />
-      ) : !joined ? (
-        club.membershipFee === 0 ? (
-          <button onClick={joinFree} className="btn btn-primary mt-4">
-            Join Free
-          </button>
-        ) : (
-          <button onClick={startPayment} className="btn btn-success mt-4">
-            Pay & Join
-          </button>
-        )
-      ) : null}
+      ) : alreadyJoined ? (
+        <button className="btn btn-disabled mt-4" disabled>
+          Already Registered
+        </button>
+      ) : event.isPaid ? (
+        <button onClick={startPayment} className="btn btn-success mt-4">
+          Pay & Join Event
+        </button>
+      ) : (
+        <button onClick={joinFreeEvent} className="btn btn-primary mt-4">
+          Join Free Event
+        </button>
+      )}
+
+      {/* ⭐ BACK BUTTON ADDED HERE */}
+      <div className="mt-6">
+        <a
+          href="/events"
+          className="px-6 py-3 bg-gray-800 text-white rounded-lg shadow hover:bg-black transition inline-block"
+        >
+          ← Back to Events
+        </a>
+      </div>
     </div>
   );
 };
 
-export default ClubDetails;
+export default EventDetails;

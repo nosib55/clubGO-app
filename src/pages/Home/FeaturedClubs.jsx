@@ -19,7 +19,7 @@ const FeaturedClubs = () => {
 
       {/* Heading + View All Button */}
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900">Featured Clubs</h2>
+        
 
         <Link
           to="/clubs"

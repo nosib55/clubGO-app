@@ -25,7 +25,6 @@ const ManagerEvents = () => {
           {events.map((ev) => (
             <div key={ev._id} className="border rounded-xl shadow p-4 bg-white">
               <h3 className="text-xl font-semibold">{ev.title}</h3>
-              <p className="text-gray-600">{ev.description}</p>
 
               <p className="text-sm mt-2">
                 <strong>Date:</strong> {ev.eventDate}
@@ -36,7 +35,7 @@ const ManagerEvents = () => {
               </p>
 
               <p className="text-sm">
-                <strong>Fee:</strong> {ev.isPaid ? `৳${ev.eventFee}` : "Free"}
+                <strong>Fee:</strong> {ev.isPaid ? `$${ev.eventFee}` : "Free"}
               </p>
 
               {/* ⭐ Button to View Registrations */}

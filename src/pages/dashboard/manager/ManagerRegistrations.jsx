@@ -121,7 +121,7 @@ const ManagerRegistrations = () => {
               <tr key={r._id}>
                 <td>{r.userEmail}</td>
                 <td className="capitalize">{r.status}</td>
-                <td>৳{r.paidAmount || 0}</td>
+                <td>${r.paidAmount || 0}</td>
                 <td>{new Date(r.joinedAt).toLocaleString()}</td>
               </tr>
             ))}

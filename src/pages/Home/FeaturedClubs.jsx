@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const FeaturedClubs = () => {
   const { data: clubs = [], isLoading } = useQuery({
@@ -14,24 +15,61 @@ const FeaturedClubs = () => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="my-10">
-      <h2 className="text-3xl font-bold mb-6">Featured Clubs</h2>
+    <div className="my-16">
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Heading + View All Button */}
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-900">Featured Clubs</h2>
+
+        <Link
+          to="/clubs"
+          className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow transition"
+        >
+          View All Clubs
+        </Link>
+      </div>
+
+      {/* CLUB GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {clubs.map((club, i) => (
           <motion.div
             key={club._id}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="border rounded-lg shadow p-4 bg-white"
+            whileHover={{ scale: 1.03 }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            className="rounded-xl shadow-lg bg-white overflow-hidden hover:shadow-xl transition"
           >
-            <img src={club.bannerImage} className="rounded-lg mb-3" />
+            {/* Image */}
+            <div className="h-48 overflow-hidden">
+              <img
+                src={club.bannerImage}
+                className="w-full h-full object-cover"
+                alt={club.clubName}
+              />
+            </div>
 
-            <h3 className="text-xl font-semibold">{club.clubName}</h3>
-            <p className="text-sm opacity-70">{club.category}</p>
+            {/* Content */}
+            <div className="p-5 space-y-2">
+              <h3 className="text-xl font-semibold">{club.clubName}</h3>
+              <p className="text-sm text-indigo-600 font-medium">
+                {club.category}
+              </p>
 
-            <p className="mt-2 text-sm">{club.description.slice(0, 80)}...</p>
+              <p className="text-sm text-gray-600">
+                {club.description.slice(0, 85)}...
+              </p>
+
+              {/* BUTTON */}
+              <div className="pt-3">
+                <Link
+                  to={`/clubs/${club._id}`}
+                  className="inline-block px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow"
+                >
+                  View Details
+                </Link>
+              </div>
+            </div>
           </motion.div>
         ))}
       </div>

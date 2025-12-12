@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
@@ -204,7 +204,14 @@ const ClubDetails = () => {
               </button>
             )}
           </motion.div>
+          
         )}
+        <Link
+          to="/clubs"
+          className="px-6 py-3 bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition"
+        >
+            Back to Clubs
+        </Link>
       </motion.div>
     </motion.div>
   );

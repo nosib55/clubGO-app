@@ -2,135 +2,99 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import EventPaymentForm from "../../components/EventPaymentForm";
+import ClubPaymentForm from "../../components/ClubPaymentForm";
 
-const EventDetails = () => {
+const ClubDetails = () => {
   const { id } = useParams();
-  const [event, setEvent] = useState(null);
+  const [club, setClub] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  const [regCount, setRegCount] = useState(0);
-  const [alreadyJoined, setAlreadyJoined] = useState(false);
+  const [joined, setJoined] = useState(false);
+  const [expiry, setExpiry] = useState(null);
 
-  // Load event details + registration count
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/events/${id}`);
-        setEvent(res.data);
+    axios.get(`${import.meta.env.VITE_API_URL}/clubs/${id}`)
+      .then(res => setClub(res.data));
 
-        const regs = await axios.get(
-          `${import.meta.env.VITE_API_URL}/manager/events/registrations/${id}`,
-          { withCredentials: true }
-        );
-
-        setRegCount(regs.data.length);
-      } catch (err) {
-        console.log("EVENT DETAILS ERROR:", err);
-      }
-    };
-
-    fetchData();
+    // check membership
+    axios.get(`${import.meta.env.VITE_API_URL}/member/clubs`, { withCredentials: true })
+      .then(res => {
+        const found = res.data.find(c => c._id === id);
+        if (found) {
+          setJoined(true);
+          setExpiry(found.expiryDate);
+        }
+      });
   }, [id]);
 
-  // ⭐ Join free event
-  const joinFreeEvent = async () => {
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/events/join`,
-        { eventId: id },
-        { withCredentials: true }
-      );
+  const joinFree = async () => {
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/clubs/join`,
+      { clubId: id },
+      { withCredentials: true }
+    );
 
-      if (res.data.message === "Already registered") {
-        setAlreadyJoined(true);
-        return Swal.fire("Already Joined", "You are already registered!", "info");
-      }
-
-      Swal.fire("Success!", "You joined this event!", "success");
-      setRegCount((prev) => prev + 1);
-    } catch (err) {
-      Swal.fire("Error", err.response?.data?.message || "Join failed", "error");
-    }
+    Swal.fire("Success!", "You joined the club!", "success");
+    setJoined(true);
   };
 
-  // ⭐ Start Stripe payment
   const startPayment = async () => {
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/events/create-payment-intent`,
-        { eventId: id },
-        { withCredentials: true }
-      );
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/clubs/create-payment-intent`,
+      { clubId: id },
+      { withCredentials: true }
+    );
 
-      setClientSecret(res.data.clientSecret);
-    } catch (err) {
-      Swal.fire("Payment Error", err.response?.data?.message, "error");
+    if (res.data.alreadyJoined) {
+      Swal.fire("Already Joined", "You are already a member!", "info");
+      return;
     }
+
+    setClientSecret(res.data.clientSecret);
   };
 
-  if (!event) return <p className="text-center mt-10">Loading...</p>;
+  if (!club) return <p>Loading...</p>;
 
   return (
     <div className="p-10 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold">{event.title}</h1>
+      <h1 className="text-3xl font-bold">{club.clubName}</h1>
 
-      <p className="mt-3 text-gray-600">{event.description}</p>
+      <p className="mt-2">{club.description}</p>
 
-      <p className="mt-3">
-        <strong>Date:</strong> {event.eventDate}
+      <p className="mt-2">Members: {club.memberCount ?? 0}</p>
+
+      <p className="mt-2">
+        Fee: {club.membershipFee > 0 ? `$${club.membershipFee}` : "Free"}
       </p>
 
-      <p className="mt-1">
-        <strong>Location:</strong> {event.location}
-      </p>
-
-      <p className="mt-3">
-        <strong>Registration Fee:</strong>{" "}
-        {event.isPaid ? (
-          <span className="text-red-600 font-bold">${event.eventFee}</span>
-        ) : (
-          <span className="text-green-600 font-bold">Free</span>
-        )}
-      </p>
-
-      {/* ⭐ Total attendees */}
-      <p className="mt-3 text-lg">
-        <strong>Total Registered:</strong> {regCount}
-      </p>
-
-      {/* ⭐ Already joined message */}
-      {alreadyJoined && (
-        <p className="mt-2 text-green-600 font-semibold">
-          ✔ You are already registered
+      {joined && (
+        <p className="mt-3 text-green-600 font-bold">
+          ✔ You are a member {expiry && `(Expires: ${new Date(expiry).toLocaleDateString()})`}
         </p>
       )}
 
-      {/* ⭐ Payment Form OR Join Button */}
-      {clientSecret ? (
-        <EventPaymentForm
+      {clientSecret && !joined ? (
+        <ClubPaymentForm
           clientSecret={clientSecret}
-          eventId={id}
-          amount={event.eventFee * 100}
+          clubId={id}
+          amount={club.membershipFee * 100}
           onSuccess={() => {
-            Swal.fire("Success", "You are registered!", "success");
-            setRegCount((prev) => prev + 1);
+            Swal.fire("Success!", "Payment completed!", "success");
+            setJoined(true);
           }}
         />
-      ) : (
-        <>
-          {alreadyJoined ? null : event.isPaid ? (
-            <button onClick={startPayment} className="btn btn-success mt-4">
-              Pay & Join Event
-            </button>
-          ) : (
-            <button onClick={joinFreeEvent} className="btn btn-primary mt-4">
-              Join Free Event
-            </button>
-          )}
-        </>
-      )}
+      ) : !joined ? (
+        club.membershipFee === 0 ? (
+          <button onClick={joinFree} className="btn btn-primary mt-4">
+            Join Free
+          </button>
+        ) : (
+          <button onClick={startPayment} className="btn btn-success mt-4">
+            Pay & Join
+          </button>
+        )
+      ) : null}
     </div>
   );
 };
 
-export default EventDetails;
+export default ClubDetails;

@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import EventPaymentForm from "../../components/EventPaymentForm";
 import Loading from "../../assets/animated/Loding";
 import Error from "../../assets/animated/error";
 
 const EventDetails = () => {
   const { id } = useParams();
-  const [event, setEvent] = useState(null);
-  const [clientSecret, setClientSecret] = useState("");
-  const [regCount, setRegCount] = useState(0);
+  const [searchParams] = useSearchParams();
+  const processedRef = useRef(false);
 
+  const [event, setEvent] = useState(null);
+  const [regCount, setRegCount] = useState(0);
   const [alreadyJoined, setAlreadyJoined] = useState(false);
   const [alreadyPaid, setAlreadyPaid] = useState(false);
-
   const [loading, setLoading] = useState(true);
+
+  const success = searchParams.get("success");
+  const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
     const load = async () => {
@@ -43,16 +45,37 @@ const EventDetails = () => {
 
         setAlreadyJoined(statusRes.data.joined);
         setAlreadyPaid(statusRes.data.paid);
+
+        // ✅ STRIPE SUCCESS HANDLER (ONCE)
+        if (
+          success === "true" &&
+          sessionId &&
+          !statusRes.data.paid &&
+          !processedRef.current
+        ) {
+          processedRef.current = true;
+
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/events/checkout-success`,
+            { eventId: id, sessionId },
+            { withCredentials: true }
+          );
+
+          Swal.fire("Success!", "Payment complete!", "success");
+          setAlreadyPaid(true);
+          setAlreadyJoined(true);
+        }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
     load();
-  }, [id]);
+  }, [id, success, sessionId]);
 
+  // ✅ FREE EVENT JOIN
   const joinFreeEvent = async () => {
     try {
       const res = await axios.post(
@@ -63,10 +86,10 @@ const EventDetails = () => {
 
       if (res.data.message === "Already registered") {
         setAlreadyJoined(true);
-        return Swal.fire("Already Registered", "You are in the event!", "info");
+        return Swal.fire("Info", "Already registered", "info");
       }
 
-      Swal.fire("Success!", "You joined the event!", "success");
+      Swal.fire("Success!", "Joined the event!", "success");
       setAlreadyJoined(true);
       setRegCount((c) => c + 1);
     } catch (err) {
@@ -74,28 +97,42 @@ const EventDetails = () => {
     }
   };
 
-  const startPayment = async () => {
+  // ✅ PAID EVENT — STRIPE CHECKOUT
+  const startCheckout = async () => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/events/create-payment-intent`,
+        `${import.meta.env.VITE_API_URL}/events/create-checkout-session`,
         { eventId: id },
         { withCredentials: true }
       );
-      setClientSecret(res.data.clientSecret);
+
+      if (res.data?.message === "Already paid") {
+        setAlreadyPaid(true);
+        return Swal.fire("Info", "Already registered", "info");
+      }
+
+      window.location.href = res.data.url;
     } catch (err) {
       Swal.fire("Payment Error", err.response?.data?.message, "error");
     }
   };
 
-  if (loading) return <div className="flex justify-center items-center h-64">
-            <Loading></Loading>
-          </div>;
-  if (!event) return
-  <div> <h2>Event Not Found</h2>
-    <div className="flex justify-center items-center h-64">
-        <Error></Error>
-         </div></div>
-  ;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loading />
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="text-center">
+        <h2>Event Not Found</h2>
+        <Error />
+      </div>
+    );
+  }
 
   return (
     <div className="p-10 max-w-4xl mx-auto">
@@ -103,17 +140,12 @@ const EventDetails = () => {
 
       <p className="mt-3 text-gray-600">{event.description}</p>
 
-      <p className="mt-3 font-bold text-black">
+      <p className="mt-3 font-bold">
         Max Attendees: {event.maxAttendees ?? "Unlimited"}
       </p>
 
-      <p className="mt-3">
-        <strong>Date:</strong> {event.eventDate}
-      </p>
-
-      <p className="mt-1">
-        <strong>Location:</strong> {event.location}
-      </p>
+      <p className="mt-2"><strong>Date:</strong> {event.eventDate}</p>
+      <p className="mt-1"><strong>Location:</strong> {event.location}</p>
 
       <p className="mt-3">
         <strong>Fee:</strong>{" "}
@@ -124,60 +156,38 @@ const EventDetails = () => {
         )}
       </p>
 
-      <p className="mt-3 text-lg">
+      <p className="mt-3">
         <strong>Total Registered:</strong> {regCount}
       </p>
 
-      <div className="mt-3 flex gap-3">
-        {alreadyPaid && (
-          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
-            ✔ Payment Complete — You are in this event
-          </span>
-        )}
-
-        {alreadyJoined && !alreadyPaid && (
-          <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full">
-            ✔ Registered
-          </span>
-        )}
-      </div>
-
-      {alreadyPaid ? (
-        <p className="mt-4 text-green-700 font-semibold text-lg">
-          🎉 You are fully registered for this event!
+      {alreadyPaid && (
+        <p className="mt-4 text-green-700 font-semibold">
+          ✔ Payment Complete — Registered
         </p>
-      ) : clientSecret ? (
-        <EventPaymentForm
-          clientSecret={clientSecret}
-          eventId={id}
-          amount={event.eventFee * 100}
-          onSuccess={() => {
-            Swal.fire("Success!", "Payment complete!", "success");
-            setAlreadyPaid(true);
-            setAlreadyJoined(true);
-            setRegCount((c) => c + 1);
-            setClientSecret("");
-          }}
-        />
-      ) : alreadyJoined ? (
-        <button className="btn btn-disabled mt-4" disabled>
-          Already Registered
-        </button>
-      ) : event.isPaid ? (
-        <button onClick={startPayment} className="btn btn-success mt-4">
+      )}
+
+      {!alreadyPaid && alreadyJoined && (
+        <p className="mt-4 text-blue-700 font-semibold">
+          ✔ Registered (Free Event)
+        </p>
+      )}
+
+      {!alreadyJoined && event.isPaid && (
+        <button onClick={startCheckout} className="btn btn-success mt-4">
           Pay & Join Event
         </button>
-      ) : (
+      )}
+
+      {!alreadyJoined && !event.isPaid && (
         <button onClick={joinFreeEvent} className="btn btn-primary mt-4">
           Join Free Event
         </button>
       )}
 
-      {/* ⭐ BACK BUTTON ADDED HERE */}
       <div className="mt-6">
         <a
           href="/events"
-          className="px-6 py-3 bg-gray-800 text-white rounded-lg shadow hover:bg-black transition inline-block"
+          className="px-6 py-3 bg-gray-800 text-white rounded-lg"
         >
           ← Back to Events
         </a>

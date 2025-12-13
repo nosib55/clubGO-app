@@ -1,46 +1,28 @@
-import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
-import useRole from "../../../hooks/useRole";
-import axios from "axios";
+import Welcome from "../../../assets/animated/Wlcome";
 
 const MemberHome = () => {
   const { user } = useAuth();
-  const { role } = useRole();
-  const [message, setMessage] = useState("");
-
-  const handleRequest = async () => {
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/manager/request`,
-        {
-          email: user.email,
-          name: user.displayName || "Unknown User"
-        },
-        { withCredentials: true }
-      );
-
-      setMessage(res.data.message);
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Something went wrong");
-    }
-  };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Member Dashboard</h2>
+    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
+      
+      {/* TEXT */}
+      <h1 className="text-3xl md:text-4xl font-bold mb-6">
+        Welcome, {user?.displayName || "Member"} 👋
+      </h1>
 
-      <p className="mb-4">Welcome, {user?.displayName || user?.email}</p>
+      {/* LOTTIE ANIMATION */}
+      <div className="w-full flex justify-center items-center h-[70vh]">
+        <Welcome
+          className="
+            w-full
+            max-w-[1200px]
+            h-full
+          "
+        />
+      </div>
 
-      {role === "member" && (
-        <button
-          onClick={handleRequest}
-          className="btn btn-primary"
-        >
-          Request to Become Manager
-        </button>
-      )}
-
-      {message && <p className="mt-3 text-blue-600">{message}</p>}
     </div>
   );
 };

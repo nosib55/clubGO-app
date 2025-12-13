@@ -2,20 +2,28 @@ import { useEffect, useRef } from "react";
 import lottie from "lottie-web";
 import animationData from "./Welcome.json";
 
-export default function Welcome() {
-  const container = useRef(null);
+export default function Welcome({ className = "" }) {
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const instance = lottie.loadAnimation({
-      container: container.current,
+    const animation = lottie.loadAnimation({
+      container: containerRef.current,
       renderer: "svg",
       loop: true,
       autoplay: true,
-      animationData
+      animationData,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid meet",
+      },
     });
 
-    return () => instance.destroy();
+    return () => animation.destroy();
   }, []);
 
-  return <div ref={container} style={{ width: 200, height: 200 }} />;
+  return (
+    <div
+      ref={containerRef}
+      className={`w-full h-full ${className}`}
+    />
+  );
 }

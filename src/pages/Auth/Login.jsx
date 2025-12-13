@@ -16,19 +16,14 @@ const Login = () => {
 
   const { register, handleSubmit } = useForm();
 
-  // ===============================
-  // EMAIL LOGIN (Firebase + Backend)
-  // ===============================
   const onSubmit = async (data) => {
     setErrorMsg("");
     setLoading(true);
 
     try {
-      // 1️⃣ Firebase Login
       const { user } = await loginUser(data.email, data.password);
 
-      // 2️⃣ Send Firebase User To Backend
-      const res = await fetch("http://localhost:5000/auth", {
+      await fetch("http://localhost:5000/auth", {
         method: "POST",
         credentials: "include",
         headers: { "content-type": "application/json" },
@@ -39,38 +34,22 @@ const Login = () => {
         }),
       });
 
-      const result = await res.json();
-      console.log("Backend Auth Response:", result);
-
-      if (!res.ok) {
-        setErrorMsg(result.message || "Authentication failed");
-        return;
-      }
-
-      // 3️⃣ Redirect user
       navigate(from, { replace: true });
-
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
       setErrorMsg("Invalid email or password");
     } finally {
       setLoading(false);
     }
   };
 
-  // ===============================
-  // GOOGLE LOGIN (Firebase + Backend)
-  // ===============================
   const handleGoogleLogin = async () => {
     setErrorMsg("");
     setLoading(true);
 
     try {
-      // 1️⃣ Google login (Firebase)
       const { user } = await googleLogin();
 
-      // 2️⃣ Send user to backend
-      const res = await fetch("http://localhost:5000/auth", {
+      await fetch("http://localhost:5000/auth", {
         method: "POST",
         credentials: "include",
         headers: { "content-type": "application/json" },
@@ -81,19 +60,8 @@ const Login = () => {
         }),
       });
 
-      const result = await res.json();
-      console.log("Google Auth Response:", result);
-
-      if (!res.ok) {
-        setErrorMsg(result.message || "Google login failed");
-        return;
-      }
-
-      // 3️⃣ Redirect
       navigate(from, { replace: true });
-
-    } catch (err) {
-      console.log(err);
+    } catch {
       setErrorMsg("Google login failed");
     } finally {
       setLoading(false);
@@ -106,11 +74,9 @@ const Login = () => {
         <AiOutlineLogin /> Login
       </h2>
 
-      {/* ERROR MESSAGE */}
-      {errorMsg && <p className="text-red-500">{errorMsg}</p>}
+      {errorMsg && <p className="text-red-500 mb-2">{errorMsg}</p>}
       {loading && <p className="text-blue-500 mb-3">Processing...</p>}
 
-      {/* EMAIL LOGIN FORM */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <input
           {...register("email", { required: true })}
@@ -126,14 +92,14 @@ const Login = () => {
         />
 
         <button
+          type="submit"
           disabled={loading}
           className="w-full bg-blue-600 text-white py-2 rounded flex items-center justify-center gap-2"
         >
-          {loading ? "Logging in..." : <> <AiOutlineLogin /> Login </>}
+          {loading ? "Logging in..." : <><AiOutlineLogin /> Login</>}
         </button>
       </form>
 
-      {/* GOOGLE LOGIN */}
       <button
         onClick={handleGoogleLogin}
         disabled={loading}

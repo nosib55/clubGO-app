@@ -1,5 +1,4 @@
 import { NavLink, Outlet } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import useRole from "../hooks/useRole";
 import { useState } from "react";
 
@@ -9,87 +8,84 @@ import { MdDashboardCustomize } from "react-icons/md";
 import { RiAdminLine } from "react-icons/ri";
 import { GiOfficeChair } from "react-icons/gi";
 
+const navClass = ({ isActive }) =>
+  `flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-200
+   text-gray-200
+   hover:bg-gray-700 hover:text-white
+   ${isActive ? "bg-primary text-white font-semibold" : ""}`;
+
 const DashboardLayout = () => {
-  const { user } = useAuth();
   const { role } = useRole();
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-base-100">
+      
       {/* SIDEBAR */}
       <aside
-        className={`w-64 bg-base-200 p-6 space-y-5 shadow-md 
+        className={`w-64 bg-gray-900 p-6 space-y-5 shadow-xl
         ${open ? "block" : "hidden"} md:block`}
       >
-        <h2 className="font-bold text-xl text-center mb-4 flex items-center justify-center gap-2">
+        <h2 className="font-bold text-xl text-white text-center mb-6 flex items-center justify-center gap-2">
           <MdDashboardCustomize />
           Dashboard
         </h2>
 
-        {/* ================= ADMIN MENU ================= */}
+        {/* ADMIN */}
         {role === "admin" && (
-          <ul className="menu text-lg">
-            <li><NavLink to="/dashboard/admin"><RiAdminLine /> Admin Home</NavLink></li>
-            <li><NavLink to="/dashboard/admin/users"><FaUsers /> Manage Users</NavLink></li>
-            <li><NavLink to="/dashboard/admin/clubs"><GiOfficeChair /> Manage Clubs</NavLink></li>
-            <li><NavLink to="/dashboard/admin/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
-
-            {/* ⭐ NEW: Manager Requests */}
-            <li><NavLink to="/dashboard/admin/requests"><FaUsersCog /> Manager Requests</NavLink></li>
+          <ul className="space-y-1">
+            <li><NavLink className={navClass} to="/dashboard/admin"><RiAdminLine /> Admin Home</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/admin/users"><FaUsers /> Manage Users</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/admin/clubs"><GiOfficeChair /> Manage Clubs</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/admin/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/admin/requests"><FaUsersCog /> Manager Requests</NavLink></li>
           </ul>
         )}
 
-        {/* ================= MANAGER MENU ================= */}
+        {/* MANAGER */}
         {role === "manager" && (
-          <ul className="menu text-lg">
-            <li><NavLink to="/dashboard/manager"><FaHome /> Manager Home</NavLink></li>
-            <li><NavLink to="/dashboard/manager/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
-            <li><NavLink to="/dashboard/manager/events"><FaUsersCog /> Events</NavLink></li>
-            <li><NavLink to="/dashboard/manager/registrations"><FaUsers /> Registrations</NavLink></li>
-            <li><NavLink to="/dashboard/manager/create-club"><GiOfficeChair /> Create Club</NavLink></li>
-            <li><NavLink to="/dashboard/manager/create-event"> ➕ Create Event</NavLink></li>
+          <ul className="space-y-1">
+            <li><NavLink className={navClass} to="/dashboard/manager"><FaHome /> Manager Home</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/manager/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/manager/events"><FaUsersCog /> Events</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/manager/registrations"><FaUsers /> Registrations</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/manager/create-club"><GiOfficeChair /> Create Club</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/manager/create-event">➕ Create Event</NavLink></li>
           </ul>
         )}
 
-        {/* ================= MEMBER MENU ================= */}
+        {/* MEMBER */}
         {role === "member" && (
-          <ul className="menu text-lg">
-            <li><NavLink to="/dashboard/member"><FaHome /> Member Home</NavLink></li>
-            <li><NavLink to="/dashboard/member/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
-            <li><NavLink to="/dashboard/member/events"><FaUsersCog /> My Events</NavLink></li>
-            <li><NavLink to="/dashboard/member/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
-
-            {/* ⭐ MEMBER → Request Manager */}
+          <ul className="space-y-1">
+            <li><NavLink className={navClass} to="/dashboard/member"><FaHome /> Member Home</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/member/clubs"><GiOfficeChair /> My Clubs</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/member/events"><FaUsersCog /> My Events</NavLink></li>
+            <li><NavLink className={navClass} to="/dashboard/member/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
             <li>
-              <NavLink to="/dashboard/member?request=manager">
+              <NavLink className={navClass} to="/dashboard/member?request=manager">
                 <FaUsersCog /> Request Manager Role
               </NavLink>
             </li>
           </ul>
         )}
 
-        <hr className="my-4" />
+        <hr className="border-gray-700 my-4" />
 
-        {/* PUBLIC LINKS */}
-        <ul className="menu text-lg">
-          <li><NavLink to="/"><FaHome /> Home</NavLink></li>
-          <li><NavLink to="/clubs"><FaUsers /> Browse Clubs</NavLink></li>
+        {/* PUBLIC */}
+        <ul className="space-y-1">
+          <li><NavLink className={navClass} to="/"><FaHome /> Home</NavLink></li>
+          <li><NavLink className={navClass} to="/clubs"><FaUsers /> Browse Clubs</NavLink></li>
         </ul>
       </aside>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <main className="flex-1 p-4">
-        {/* Mobile Menu Button */}
         <button
-          className="md:hidden mb-4 btn btn-outline btn-sm"
+          className="md:hidden btn btn-sm mb-4"
           onClick={() => setOpen(!open)}
         >
           Menu
         </button>
-
-        <p className="text-sm opacity-70 mb-2">
-          Name : {user?.displayName || user?.email}
-        </p>
 
         <Outlet />
       </main>

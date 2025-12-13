@@ -1,4 +1,3 @@
-// src/context/AuthProvider.jsx
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
@@ -10,7 +9,7 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
-  updateProfile
+  updateProfile,
 } from "firebase/auth";
 
 import { app } from "../firebase/firebase.config";
@@ -22,21 +21,25 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 🔐 REGISTER
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  const signIn = (email, password) => {
+  // 🔐 LOGIN (FIXED NAME)
+  const loginUser = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  // 🔐 GOOGLE LOGIN
   const googleLogin = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
+  // 🔐 UPDATE PROFILE
   const updateUserProfile = (name, photo) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -44,25 +47,27 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  // 🔐 LOGOUT
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
   };
 
+  // 🔄 AUTH STATE
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
 
-    return () => unSubscribe();
+    return () => unsubscribe();
   }, []);
 
   const authInfo = {
     user,
     loading,
     createUser,
-    signIn,
+    loginUser,      // ✅ FIXED
     googleLogin,
     updateUserProfile,
     logOut,

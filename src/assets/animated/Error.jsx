@@ -17,5 +17,5 @@ export default function Error() {
     return () => instance.destroy();
   }, []);
 
-  return <div ref={container} style={{ width: 200, height: 200 }} />;
+  return <div ref={container} style={{ width: 200, height: 160 }} />;
 }

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Loading from "../../assets/animated/Loding";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -21,7 +22,9 @@ const Events = () => {
     },
   });
 
-  if (isLoading) return <p className="text-center mt-10">Loading events...</p>;
+  if (isLoading) return <div className="flex justify-center items-center h-64">
+            <Loading></Loading>
+          </div>;
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -69,6 +72,15 @@ const Events = () => {
             </Link>
           </motion.div>
         ))}
+        
+      </div>
+      <div className="mt-6">
+        <a
+          href="/"
+          className="px-6 py-3 bg-gray-800 text-white rounded-lg shadow hover:bg-black transition inline-block"
+        >
+          ← Back to Home
+        </a>
       </div>
     </div>
   );

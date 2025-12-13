@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EventPaymentForm from "../../components/EventPaymentForm";
+import Loading from "../../assets/animated/Loding";
+import Error from "../../assets/animated/error";
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -85,8 +87,15 @@ const EventDetails = () => {
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
-  if (!event) return <p className="text-center mt-10">Event not found</p>;
+  if (loading) return <div className="flex justify-center items-center h-64">
+            <Loading></Loading>
+          </div>;
+  if (!event) return
+  <div> <h2>Event Not Found</h2>
+    <div className="flex justify-center items-center h-64">
+        <Error></Error>
+         </div></div>
+  ;
 
   return (
     <div className="p-10 max-w-4xl mx-auto">

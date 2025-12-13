@@ -88,7 +88,7 @@ const DashboardLayout = () => {
         </button>
 
         <p className="text-sm opacity-70 mb-2">
-          Logged in as: {user?.displayName || user?.email}
+          Name : {user?.displayName || user?.email}
         </p>
 
         <Outlet />

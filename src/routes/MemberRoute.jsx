@@ -5,7 +5,7 @@ import useRole from "../hooks/useRole";
 const MemberRoute = ({ children }) => {
   const { role, roleLoading } = useRole();
 
-  if (roleLoading) return <p>Checking role...</p>;
+  if (roleLoading) return <p>...</p>;
 
   if (role !== "member" && role !== "manager" && role !== "admin")
     return <Navigate to="/" />;

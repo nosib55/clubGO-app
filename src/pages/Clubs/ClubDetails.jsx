@@ -152,7 +152,7 @@ const ClubDetails = () => {
           {processing ? "Redirecting..." : "Pay & Join"}
         </button>
       )}
-
+<br />
       <Link
         to="/clubs"
         className="inline-block px-6 py-3 bg-gray-800 text-white rounded-xl hover:bg-black"

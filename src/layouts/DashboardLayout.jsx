@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import useRole from "../hooks/useRole";
 import { useState } from "react";
+import Loading from "../assets/animated/Loding";
 
 // Icons
 import { FaUsers, FaHome, FaMoneyCheckAlt, FaUsersCog } from "react-icons/fa";
@@ -15,8 +16,17 @@ const navClass = ({ isActive }) =>
    ${isActive ? "bg-primary text-white font-semibold" : ""}`;
 
 const DashboardLayout = () => {
-  const { role } = useRole();
+  const { role, loading } = useRole();
   const [open, setOpen] = useState(false);
+
+  // ✅ LOADING STATE
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-base-100">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex bg-base-100">
@@ -62,9 +72,8 @@ const DashboardLayout = () => {
             <li><NavLink className={navClass} to="/dashboard/member/events"><FaUsersCog /> My Events</NavLink></li>
             <li><NavLink className={navClass} to="/dashboard/member/payments"><FaMoneyCheckAlt /> Payments</NavLink></li>
             <li>
-              <NavLink className={navClass} to="/dashboard/member?request=manager">
-                <FaUsersCog /> Request Manager Role
-              </NavLink>
+              <NavLink className={navClass}to="/dashboard/member/request-manager"><FaUsersCog /> Request Manager Role</NavLink>
+
             </li>
           </ul>
         )}

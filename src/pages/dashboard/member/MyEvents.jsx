@@ -24,7 +24,7 @@ const MyEvents = () => {
           {events.map((ev) => (
             <div
               key={ev._id}
-              className="border rounded-xl shadow p-4 bg-white space-y-2"
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
             >
               <h3 className="text-xl font-semibold">{ev.title}</h3>
 
@@ -33,12 +33,12 @@ const MyEvents = () => {
               <div className="text-sm space-y-1">
                 <p><strong>Date:</strong> {ev.eventDate}</p>
                 <p><strong>Location:</strong> {ev.location}</p>
-                <p><strong>Fee:</strong> {ev.isPaid ? `৳${ev.eventFee}` : "Free"}</p>
+                <p><strong>Fee:</strong> {ev.isPaid ? `$${ev.eventFee}` : "Free"}</p>
               </div>
 
               <p className="text-xs opacity-60">Managed by: {ev.managerEmail}</p>
 
-              <button className="btn btn-outline btn-sm w-full mt-2">
+              <button className="btn btn-sm bg-orange-500 hover:bg-orange-600 text-white w-full rounded-xl">
                 View Details
               </button>
             </div>

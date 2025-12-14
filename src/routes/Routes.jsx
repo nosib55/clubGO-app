@@ -40,6 +40,9 @@ import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
 import MemberRoute from "./MemberRoute";
 import MemberPayments from "../pages/dashboard/member/MemberPayments";
+import RequestManager from "../pages/dashboard/member/RequestManager";
+import About from "../components/shared/About";
+import Contact from "../components/shared/Contact";
 
 const router = createBrowserRouter([
   // ================= PUBLIC ROUTES =================
@@ -51,6 +54,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
 
       // Clubs
       { path: "clubs", element: <Clubs /> },
@@ -206,6 +211,14 @@ const router = createBrowserRouter([
           </MemberRoute>
         ),
       },
+      {
+  path: "member/request-manager",
+  element: (
+    <MemberRoute>
+      <RequestManager />
+    </MemberRoute>
+  ),
+},
       {
   path: "member/payments",
   element: (

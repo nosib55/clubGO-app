@@ -49,6 +49,30 @@ const Navbar = () => {
           Events
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            isActive
+              ? "text-orange-400 font-semibold border-b-2 border-orange-400"
+              : "text-gray-200 hover:text-white"
+          }
+        >
+          About
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            isActive
+              ? "text-orange-400 font-semibold border-b-2 border-orange-400"
+              : "text-gray-200 hover:text-white"
+          }
+        >
+          Contact Us
+        </NavLink>
+      </li>
     </>
   );
 

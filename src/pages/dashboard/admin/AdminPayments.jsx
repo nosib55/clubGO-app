@@ -1,8 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Loading from "../../../assets/animated/Loding";
 
 const AdminPayments = () => {
-  const { data: payments = [] } = useQuery({
+  const {
+    data: payments = [],
+    isLoading,
+    
+  } = useQuery({
     queryKey: ["adminPayments"],
     queryFn: async () => {
       const res = await axios.get(
@@ -12,6 +17,17 @@ const AdminPayments = () => {
       return res.data;
     },
   });
+
+  // ✅ LOADING STATE
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
+
+  
 
   // ===============================
   // 🔥 TOTAL PAYMENTS
@@ -38,18 +54,15 @@ const AdminPayments = () => {
         Admin Payments Dashboard
       </h1>
 
-      {/* =========================== */}
-      {/* 🟦 TOTAL PAYMENTS BY CLUB */}
-      {/* =========================== */}
+      {/* TOTAL BY CLUB + EVENT */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-        
-        {/* CLUB CARD */}
+        {/* CLUB */}
         <div className="bg-white rounded-2xl shadow p-6 border border-blue-100">
-          <h2 className="text-2xl font-bold text-blue-600 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-blue-600">
             🏆 Total Payments by Club
           </h2>
 
-          <div className="mt-4 bg-blue-50 p-4 rounded-lg text-lg font-semibold">
+          <div className="mt-4 bg-blue-50 p-4 rounded-lg font-semibold">
             {clubTotalAmount > 0 ? (
               <>
                 {Object.entries(clubTotals).map(([club, total]) => (
@@ -58,8 +71,7 @@ const AdminPayments = () => {
                     <span className="text-blue-700">${total}</span>
                   </p>
                 ))}
-
-                <p className="flex justify-between mt-3 pt-3 border-t font-bold text-xl">
+                <p className="flex justify-between mt-3 pt-3 border-t text-xl">
                   <span>Total</span>
                   <span className="text-blue-700">${clubTotalAmount}</span>
                 </p>
@@ -70,13 +82,13 @@ const AdminPayments = () => {
           </div>
         </div>
 
-        {/* EVENT CARD */}
+        {/* EVENT */}
         <div className="bg-white rounded-2xl shadow p-6 border border-green-100">
-          <h2 className="text-2xl font-bold text-green-600 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-green-600">
             🎉 Total Payments by Event
           </h2>
 
-          <div className="mt-4 bg-green-50 p-4 rounded-lg text-lg font-semibold">
+          <div className="mt-4 bg-green-50 p-4 rounded-lg font-semibold">
             {eventTotalAmount > 0 ? (
               <>
                 {Object.entries(eventTotals).map(([event, total]) => (
@@ -85,8 +97,7 @@ const AdminPayments = () => {
                     <span className="text-green-700">${total}</span>
                   </p>
                 ))}
-
-                <p className="flex justify-between mt-3 pt-3 border-t font-bold text-xl">
+                <p className="flex justify-between mt-3 pt-3 border-t text-xl">
                   <span>Total</span>
                   <span className="text-green-700">${eventTotalAmount}</span>
                 </p>
@@ -98,59 +109,56 @@ const AdminPayments = () => {
         </div>
       </div>
 
-      {/* =========================== */}
-      {/* 🗂 ALL PAYMENT RECORDS TABLE */}
-      {/* =========================== */}
+      {/* ALL PAYMENTS TABLE */}
       <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
-        <h2 className="text-3xl font-bold mb-4 flex items-center gap-2">
-          📄 All Payment Records
-        </h2>
+        <h2 className="text-3xl font-bold mb-4">📄 All Payment Records</h2>
 
-        <table className="min-w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-100 text-left">
-              <th className="p-3">User</th>
-              <th className="p-3">Type</th>
-              <th className="p-3">Club/Event</th>
-              <th className="p-3">Amount</th>
-              <th className="p-3">Date</th>
-              <th className="p-3">Payment ID</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {payments.map((p) => (
-              <tr key={p._id} className="border-b hover:bg-gray-50 transition">
-                <td className="p-3">{p.userEmail}</td>
-
-                <td className="p-3 capitalize font-semibold text-blue-700">
-                  {p.type}
-                </td>
-
-                <td className="p-3">
-                  {p.type === "club" ? (
-                    <span className="text-blue-600 font-medium">
-                      {p.clubName}
-                    </span>
-                  ) : (
-                    <span className="text-green-600 font-medium">
-                      {p.eventName}
-                    </span>
-                  )}
-                </td>
-
-                <td className="p-3 font-semibold">${p.amount}</td>
-
-                <td className="p-3">
-                  {new Date(p.createdAt).toLocaleString()}
-                </td>
-
-                <td className="p-3 text-gray-600">{p.paymentIntentId}</td>
+        {payments.length === 0 ? (
+          <p className="text-gray-500 text-center py-10">
+            No payment records found
+          </p>
+        ) : (
+          <table className="min-w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100 text-left">
+                <th className="p-3">User</th>
+                <th className="p-3">Type</th>
+                <th className="p-3">Club / Event</th>
+                <th className="p-3">Amount</th>
+                <th className="p-3">Date</th>
+                <th className="p-3">Payment ID</th>
               </tr>
-            ))}
-          </tbody>
+            </thead>
 
-        </table>
+            <tbody>
+              {payments.map((p) => (
+                <tr
+                  key={p._id}
+                  className="border-b hover:bg-gray-50 transition"
+                >
+                  <td className="p-3">{p.userEmail}</td>
+                  <td className="p-3 capitalize font-semibold text-blue-700">
+                    {p.type}
+                  </td>
+                  <td className="p-3">
+                    {p.type === "club" ? (
+                      <span className="text-blue-600">{p.clubName}</span>
+                    ) : (
+                      <span className="text-green-600">{p.eventName}</span>
+                    )}
+                  </td>
+                  <td className="p-3 font-semibold">${p.amount}</td>
+                  <td className="p-3">
+                    {new Date(p.createdAt).toLocaleString()}
+                  </td>
+                  <td className="p-3 text-gray-600">
+                    {p.paymentIntentId}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

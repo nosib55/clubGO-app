@@ -20,27 +20,57 @@ const MemberPayments = () => {
       {payments.length === 0 ? (
         <p className="text-gray-500">You have no payment records yet.</p>
       ) : (
-        <table className="table w-full border rounded-lg">
-          <thead className="bg-gray-100">
-            <tr>
-              <th>Club</th>
-              <th>Amount</th>
-              <th>Payment ID</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {payments.map((p) => (
-              <tr key={p._id}>
-                <td>{p.clubName}</td>
-                <td>${p.amount}</td>
-                <td className="text-blue-600">{p.paymentIntentId}</td>
-                <td>{new Date(p.createdAt).toLocaleString()}</td>
+        <div className="overflow-x-auto">
+          <table className="table w-full border rounded-lg">
+            <thead className="bg-gray-100">
+              <tr>
+                <th>Type</th>
+                <th>Club / Event</th>
+                <th>Amount</th>
+                <th>Payment ID</th>
+                <th>Date</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {payments.map((p) => (
+                <tr key={p._id}>
+                  {/* TYPE */}
+                  <td>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-semibold
+                        ${
+                          p.type === "club"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-green-100 text-green-700"
+                        }`}
+                    >
+                      {p.type === "club" ? "Club" : "Event"}
+                    </span>
+                  </td>
+
+                  {/* NAME */}
+                  <td>
+                    {p.type === "club"
+                      ? p.clubName || "Unknown Club"
+                      : p.eventName || "Unknown Event"}
+                  </td>
+
+                  {/* AMOUNT */}
+                  <td>${p.amount}</td>
+
+                  {/* PAYMENT ID */}
+                  <td className="text-blue-600 text-sm">
+                    {p.paymentIntentId || "—"}
+                  </td>
+
+                  {/* DATE */}
+                  <td>{new Date(p.createdAt).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

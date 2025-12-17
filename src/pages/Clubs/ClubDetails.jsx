@@ -30,7 +30,8 @@ const ClubDetails = () => {
 
         // 1️⃣ Get club details
         const clubRes = await axios.get(
-          `${import.meta.env.VITE_API_URL}/clubs/${id}`
+          `${import.meta.env.VITE_API_URL}/clubs/${id}`,          { withCredentials: true }
+
         );
         setClub(clubRes.data);
 

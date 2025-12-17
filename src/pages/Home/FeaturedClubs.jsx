@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Loading from "../../assets/animated/Loding";
 
 const FeaturedClubs = () => {
   const { data: clubs = [], isLoading } = useQuery({
@@ -12,7 +13,7 @@ const FeaturedClubs = () => {
     }
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <div className="items-center flex justify-center"><Loading></Loading></div>;
 
   return (
     <div className="my-16">

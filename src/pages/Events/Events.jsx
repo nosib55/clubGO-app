@@ -8,7 +8,7 @@ const Events = () => {
     queryKey: ["member-events"],
     queryFn: async () => {
       const res = await axios.get(
-        "http://localhost:5000/member/events/available",
+        `${import.meta.env.VITE_API_URL}/member/events/available`,
         { withCredentials: true }
       );
       return res.data;

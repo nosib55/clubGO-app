@@ -3,68 +3,76 @@ import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
-    <section className="hero min-h-[70vh] bg-base-200 relative overflow-hidden">
-
-      {/* BACKGROUND GRADIENT SHAPES */}
+    <section className="relative min-h-[80vh] bg-white overflow-hidden">
+      
+      {/* Soft Background Blobs (NOT behind image) */}
       <motion.div
-        className="absolute -top-32 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl"
+        className="absolute -top-32 -left-32 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-60"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.8 }}
+        animate={{ opacity: 0.6 }}
         transition={{ duration: 1 }}
       />
       <motion.div
-        className="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-secondary/20 rounded-full blur-3xl"
+        className="absolute bottom-0 -right-32 w-[28rem] h-[28rem] bg-indigo-200 rounded-full blur-3xl opacity-60"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
-        transition={{ duration: 1.4 }}
+        animate={{ opacity: 0.6 }}
+        transition={{ duration: 1.2 }}
       />
 
-      {/* CONTENT */}
-      <div className="hero-content flex-col lg:flex-row-reverse gap-12 z-10">
-
-        {/* RIGHT ILLUSTRATION */}
-        <motion.img
-          src="/hero-illustration.png"
-          className="max-w-sm rounded-lg shadow-2xl"
-          initial={{ opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9 }}
-        />
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
 
         {/* LEFT TEXT */}
         <motion.div
-          initial={{ opacity: 0, x: -60 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9 }}
         >
-          <h1 className="text-5xl font-bold leading-tight">
-            Discover <span className="text-primary">Your Passion</span><br />
-            Join Amazing Clubs.
+          <h1 className="text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+            Discover Clubs.<br />
+            <span className="text-purple-600">Join Your Community.</span>
           </h1>
 
-          <p className="py-6 text-lg opacity-80">
-            Explore hundreds of clubs and events. Find your community, learn new
-            skills, and connect with people who share your interests.
+          <p className="mt-6 text-lg text-gray-600 max-w-xl">
+            Club-Go helps people explore clubs, join events, and connect with
+            like-minded communities effortlessly.
           </p>
 
-          {/* BUTTON GROUP */}
-          <div className="flex gap-4 mt-4">
+          {/* BUTTONS */}
+          <div className="flex flex-wrap gap-4 mt-10">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn btn-primary px-8 text-lg"
+              className="px-10 py-4 rounded-xl text-white font-semibold text-lg
+                         bg-gradient-to-r from-purple-600 to-indigo-600
+                         shadow-lg shadow-purple-500/30"
             >
-              Explore Clubs
+              View All Clubs
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn btn-outline btn-primary px-8 text-lg"
+              className="px-10 py-4 rounded-xl border border-gray-300
+                         text-gray-800 font-semibold text-lg hover:bg-gray-50"
             >
-              Explore Events
+              Browse Events
             </motion.button>
           </div>
+        </motion.div>
+
+        {/* RIGHT IMAGE (NO BACKGROUND) */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+          className="flex justify-center"
+        >
+          <img
+            src="/hero-illustration.png"
+            alt="Club community"
+            className="max-w-md w-full"
+          />
         </motion.div>
 
       </div>

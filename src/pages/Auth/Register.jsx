@@ -27,7 +27,7 @@ const Register = () => {
       await updateUserProfile(data.name, data.photo);
 
       // 3️⃣ Fire user to backend `/auth`
-      const res = await fetch("http://localhost:5000/auth", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth`, {
         method: "POST",
         credentials: "include",
         headers: { "content-type": "application/json" },
@@ -69,7 +69,7 @@ const Register = () => {
       const { user } = await googleLogin();
 
       // 2️⃣ Send Google user to backend
-      const res = await fetch("http://localhost:5000/auth", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth`, {
         method: "POST",
         credentials: "include",
         headers: { "content-type": "application/json" },

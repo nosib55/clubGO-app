@@ -23,7 +23,7 @@ const Login = () => {
     try {
       const { user } = await loginUser(data.email, data.password);
 
-      await fetch("http://localhost:5000/auth", {
+      await fetch(`${import.meta.env.VITE_API_URL}/auth`, {
         method: "POST",
         credentials: "include",
         headers: { "content-type": "application/json" },
@@ -49,7 +49,7 @@ const Login = () => {
     try {
       const { user } = await googleLogin();
 
-      await fetch("http://localhost:5000/auth", {
+      await fetch(`${import.meta.env.VITE_API_URL}/auth`, {
         method: "POST",
         credentials: "include",
         headers: { "content-type": "application/json" },

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router";
 
 const Hero = () => {
   return (
@@ -46,8 +47,8 @@ const Hero = () => {
               className="px-10 py-4 rounded-xl text-white font-semibold text-lg
                          bg-gradient-to-r from-purple-600 to-indigo-600
                          shadow-lg shadow-purple-500/30"
-            >
-              View All Clubs
+            ><Link
+       to="/clubs">View All Clubs</Link>
             </motion.button>
 
             <motion.button
@@ -55,8 +56,8 @@ const Hero = () => {
               whileTap={{ scale: 0.95 }}
               className="px-10 py-4 rounded-xl border border-gray-300
                          text-gray-800 font-semibold text-lg hover:bg-gray-50"
-            >
-              Browse Events
+            ><Link to="/events">Browse Events</Link>
+    
             </motion.button>
           </div>
         </motion.div>

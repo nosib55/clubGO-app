@@ -43,6 +43,7 @@ import MemberPayments from "../pages/dashboard/member/MemberPayments";
 import RequestManager from "../pages/dashboard/member/RequestManager";
 import About from "../components/shared/About";
 import Contact from "../components/shared/Contact";
+import Profile from "../pages/profile/Profile";
 
 const router = createBrowserRouter([
   // ================= PUBLIC ROUTES =================
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+  path: "/profile",
+  element: (
+    <PrivateRoute>
+      <Profile />
+    </PrivateRoute>
+  ),
+}
     ],
   },
 

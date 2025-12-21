@@ -1,16 +1,96 @@
-# React + Vite
+# Club-Go 🎯  
+### Membership & Event Management Platform for Local Clubs
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🌐 Live Site
+(https://club-go.netlify.app/)
 
-Currently, two official plugins are available:
+## For Test 
+Admin : testadmin@gmail.com
+Passwords : Admin12
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Project Overview
+**Club-Go** is a full-stack web application that helps people discover, join, and manage local clubs and events.  
+Users can explore clubs, become members, register for events, and manage payments, while club managers and admins handle operations through role-based dashboards.
 
-## React Compiler
+The platform is designed with a modern UI, smooth animations, and secure authentication to deliver a professional, recruiter-ready experience.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Key Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 👤 Authentication & Roles
+- Email/Password & Google authentication (Firebase)
+- Role-based access:
+  - **Admin**
+  - **Club Manager**
+  - **Member**
+- Protected routes with JWT & Firebase token verification
+
+### 🏠 Public Features
+- Browse all clubs and upcoming events
+- View club details and event information
+- Join free or paid clubs
+- Register for events
+- Modern landing page with animations
+
+### 📊 Dashboards
+- **Admin Dashboard**
+  - Manage users and roles
+  - Approve/reject clubs
+  - Monitor payments and platform statistics
+- **Club Manager Dashboard**
+  - Create and manage clubs
+  - Create, update, and delete events
+  - View club members and event registrations
+- **Member Dashboard**
+  - View joined clubs
+  - Track registered events
+  - Payment history
+
+### 💳 Payments
+- Secure Stripe payment integration (test mode)
+- Membership payments
+- Event registration payments
+
+### 🎨 UI & UX
+- Responsive design (mobile, tablet, desktop)
+- Framer Motion animations
+- Clean, modern, recruiter-friendly layout
+- Consistent color theme and spacing
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+- React
+- React Router DOM
+- Tailwind CSS
+- Framer Motion
+- React Hook Form
+- Swiper.js
+- Axios
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Firebase Admin SDK
+- JWT Authentication
+- Stripe API
+
+---
+
+## 📦 Important NPM Packages
+```bash
+react
+react-router-dom
+react-hook-form
+framer-motion
+swiper
+firebase
+axios
+stripe
+jsonwebtoken
+express
+mongodb

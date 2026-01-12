@@ -19,11 +19,11 @@ const ManagerEvents = () => {
       <h2 className="text-3xl font-bold mb-4">My Events</h2>
 
       {events.length === 0 ? (
-        <p className="text-gray-500">You have not created any events yet.</p>
+        <p className="text-base-content/60">You have not created any events yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((ev) => (
-            <div key={ev._id} className="border rounded-xl shadow p-4 bg-white">
+            <div key={ev._id} className="border rounded-xl shadow p-4 bg-base-100">
               <h3 className="text-xl font-semibold">{ev.title}</h3>
 
               <p className="text-sm mt-2">

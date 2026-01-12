@@ -12,10 +12,10 @@ const Contact = () => {
         transition={{ duration: 0.6 }}
         className="text-center mb-12"
       >
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl font-bold text-base-content mb-4">
           Contact Us
         </h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        <p className="text-base-content/70 max-w-2xl mx-auto">
           Questions, feedback, or support requests are always welcome.
           Reach out and the team will respond as soon as possible.
         </p>
@@ -58,9 +58,9 @@ const Contact = () => {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition"
+          className="bg-base-100 rounded-xl p-8 shadow-md hover:shadow-xl transition"
         >
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+          <h2 className="text-2xl font-semibold mb-6 text-base-content">
             Send a Message
           </h2>
 
@@ -68,19 +68,19 @@ const Contact = () => {
             <input
               type="text"
               placeholder="Full Name"
-              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-base-100 text-base-content"
             />
 
             <input
               type="email"
               placeholder="Email Address"
-              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-base-100 text-base-content"
             />
 
             <textarea
               rows="4"
               placeholder="Message"
-              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-base-100 text-base-content"
             ></textarea>
 
             <button

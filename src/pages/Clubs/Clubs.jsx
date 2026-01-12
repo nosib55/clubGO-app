@@ -41,7 +41,7 @@ const Clubs = () => {
 
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-base-content">
           Approved Clubs
         </h1>
 
@@ -100,7 +100,7 @@ const Clubs = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="bg-white rounded-xl shadow"
+              className="bg-base-100 rounded-xl shadow"
             >
               <img
                 src={club.bannerImage}
@@ -112,10 +112,10 @@ const Clubs = () => {
                 <h2 className="text-xl font-semibold">
                   {club.clubName}
                 </h2>
-                <p className="text-indigo-600">
+                <p className="text-primary">
                   {club.category}
                 </p>
-                <p className="text-black text-lg">Fee: $
+                <p className="text-base-content text-lg">Fee: $
                   {club.membershipFee}
                 </p>
 

@@ -1,33 +1,41 @@
 import { Link, NavLink } from "react-router-dom";
+import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import logo from "/logo.svg";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { user, logOut } = useAuth() || {};
 
+  // THEME STATE
+  // Theme logic moved to ThemeContext/ThemeToggle
+
   const handleLogout = () => {
-    logOut().catch(() => {});
+    logOut().catch(() => { });
   };
 
   const navLinks = (
     <>
-      {["/", "/clubs", "/events", "/about", "/contact"].map((path, index) => {
-        const labels = ["Home", "Clubs", "Events", "About", "Contact"];
-        return (
-          <li key={path}>
-            <NavLink
-              to={path}
-              className={({ isActive }) =>
-                isActive
-                  ? "text-indigo-400 font-semibold border-b-2 border-indigo-400"
-                  : "text-gray-300 hover:text-white"
-              }
-            >
-              {labels[index]}
-            </NavLink>
-          </li>
-        );
-      })}
+      {[
+        { path: "/", label: "Home" },
+        { path: "/clubs", label: "Clubs" },
+        { path: "/events", label: "Events" },
+        { path: "/about", label: "About" },
+        { path: "/contact", label: "Contact" },
+      ].map(({ path, label }) => (
+        <li key={path}>
+          <NavLink
+            to={path}
+            className={({ isActive }) =>
+              isActive
+                ? "text-indigo-400 font-semibold border-b-2 border-indigo-400"
+                : "text-gray-300 hover:text-white"
+            }
+          >
+            {label}
+          </NavLink>
+        </li>
+      ))}
     </>
   );
 
@@ -65,12 +73,20 @@ const Navbar = () => {
 
         {/* RIGHT */}
         <div className="navbar-end space-x-3">
+
+          {/* THEME TOGGLE */}
+          {/* THEME TOGGLE */}
+          <ThemeToggle />
+
           {user ? (
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full ring ring-indigo-400 ring-offset-2">
                   <img
-                    src={user.photoURL || "https://i.ibb.co/PGv8ZzG/user.png"}
+                    src={
+                      user.photoURL ||
+                      "https://i.ibb.co/PGv8ZzG/user.png"
+                    }
                     alt="user"
                   />
                 </div>

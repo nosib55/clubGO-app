@@ -40,15 +40,15 @@ const testimonials = [
 
 const Testimonial = () => {
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-base-200">
       <div className="max-w-6xl mx-auto px-4">
 
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">
+          <h2 className="text-4xl font-bold text-base-content mb-4">
             Rated & Loved on Club-Go
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-base-content/70 text-lg">
             Real reviews from people using Club-Go every day.
           </p>
         </div>
@@ -70,8 +70,8 @@ const Testimonial = () => {
         >
           {testimonials.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="bg-white rounded-2xl p-6 shadow-md h-full flex flex-col justify-between">
-                
+              <div className="bg-base-100 rounded-2xl p-6 shadow-md h-full flex flex-col justify-between">
+
                 {/* Rating */}
                 <div className="flex gap-1 mb-3">
                   {[...Array(item.rating)].map((_, i) => (
@@ -83,7 +83,7 @@ const Testimonial = () => {
                 </div>
 
                 {/* Text */}
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <p className="text-base-content/70 mb-6 leading-relaxed">
                   “{item.text}”
                 </p>
 
@@ -95,10 +95,10 @@ const Testimonial = () => {
                     className="w-10 h-10 rounded-full"
                   />
                   <div>
-                    <h4 className="font-semibold text-gray-800">
+                    <h4 className="font-semibold text-base-content">
                       {item.name}
                     </h4>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-base-content/60">
                       {item.role}
                     </p>
                   </div>

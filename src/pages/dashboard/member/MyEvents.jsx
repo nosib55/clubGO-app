@@ -18,17 +18,17 @@ const MyEvents = () => {
       <h2 className="text-2xl font-bold mb-4">My Joined Events</h2>
 
       {events.length === 0 ? (
-        <p className="text-gray-500">You have not joined any events yet.</p>
+        <p className="text-base-content/60">You have not joined any events yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((ev) => (
             <div
               key={ev._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
+              className="bg-base-100 rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
             >
               <h3 className="text-xl font-semibold">{ev.title}</h3>
 
-              <p className="text-gray-600 text-sm">{ev.description}</p>
+              <p className="text-base-content/70 text-sm">{ev.description}</p>
 
               <div className="text-sm space-y-1">
                 <p><strong>Date:</strong> {ev.eventDate}</p>

@@ -99,7 +99,7 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow rounded">
+    <div className="max-w-md mx-auto mt-20 p-6 bg-base-100 shadow rounded">
       <h2 className="text-3xl font-bold mb-4 flex items-center gap-2">
         <AiOutlineUserAdd /> Register
       </h2>

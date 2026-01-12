@@ -4,8 +4,8 @@ import { Link } from "react-router";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[80vh] bg-white overflow-hidden">
-      
+    <section className="relative min-h-[80vh] bg-base-100 overflow-hidden">
+
       {/* Soft Background Blobs (NOT behind image) */}
       <motion.div
         className="absolute -top-32 -left-32 w-96 h-96 bg-purple-200 rounded-full blur-3xl opacity-60"
@@ -29,12 +29,12 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9 }}
         >
-          <h1 className="text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+          <h1 className="text-5xl lg:text-6xl font-extrabold text-base-content leading-tight">
             Discover Clubs.<br />
-            <span className="text-purple-600">Join Your Community.</span>
+            <span className="text-primary">Join Your Community.</span>
           </h1>
 
-          <p className="mt-6 text-lg text-gray-600 max-w-xl">
+          <p className="mt-6 text-lg text-base-content/70 max-w-xl">
             Club-Go helps people explore clubs, join events, and connect with
             like-minded communities effortlessly.
           </p>
@@ -48,16 +48,16 @@ const Hero = () => {
                          bg-gradient-to-r from-purple-600 to-indigo-600
                          shadow-lg shadow-purple-500/30"
             ><Link
-       to="/clubs">View All Clubs</Link>
+              to="/clubs">View All Clubs</Link>
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 rounded-xl border border-gray-300
-                         text-gray-800 font-semibold text-lg hover:bg-gray-50"
+              className="px-10 py-4 rounded-xl border border-base-300
+                         text-base-content font-semibold text-lg hover:bg-base-200"
             ><Link to="/events">Browse Events</Link>
-    
+
             </motion.button>
           </div>
         </motion.div>

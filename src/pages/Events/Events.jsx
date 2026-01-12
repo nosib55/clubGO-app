@@ -25,7 +25,7 @@ const Events = () => {
 
   if (events.length === 0) {
     return (
-      <div className="text-center mt-20 text-gray-500">
+      <div className="text-center mt-20 text-base-content/60">
         <h2 className="text-2xl font-semibold">No events available</h2>
         <p>Join a club to see its events.</p>
       </div>
@@ -39,7 +39,7 @@ const Events = () => {
       {events.map(event => (
         <div
           key={event._id}
-          className="p-4 mb-4 bg-white shadow rounded-lg flex justify-between items-center"
+          className="p-4 mb-4 bg-base-100 shadow rounded-lg flex justify-between items-center"
         >
           <div>
             <h2 className="text-xl font-semibold">{event.title}</h2>

@@ -20,7 +20,7 @@ const FeaturedClubs = () => {
 
       {/* Heading + View All Button */}
       <div className="flex justify-between items-center mb-8">
-        
+
 
         <Link
           to="/clubs"
@@ -39,7 +39,7 @@ const FeaturedClubs = () => {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.03 }}
             transition={{ delay: i * 0.1, duration: 0.5 }}
-            className="rounded-xl shadow-lg bg-white overflow-hidden hover:shadow-xl transition"
+            className="rounded-xl shadow-lg bg-base-100 overflow-hidden hover:shadow-xl transition"
           >
             {/* Image */}
             <div className="h-48 overflow-hidden">
@@ -52,12 +52,12 @@ const FeaturedClubs = () => {
 
             {/* Content */}
             <div className="p-5 space-y-2">
-              <h3 className="text-xl font-semibold">{club.clubName}</h3>
-              <p className="text-sm text-indigo-600 font-medium">
+              <h3 className="text-xl font-semibold text-base-content">{club.clubName}</h3>
+              <p className="text-sm text-primary font-medium">
                 {club.category}
               </p>
 
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-base-content/70">
                 {club.description.slice(0, 85)}...
               </p>
 

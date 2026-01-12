@@ -28,7 +28,7 @@ const MyClubs = () => {
       <h1 className="text-3xl font-bold mb-6">My Clubs</h1>
 
       {clubs.length === 0 ? (
-        <p className="text-gray-500">You have not joined any club yet.</p>
+        <p className="text-base-content/60">You have not joined any club yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {clubs.map((club) => {
@@ -37,7 +37,7 @@ const MyClubs = () => {
             return (
               <div
                 key={club._id}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
+                className="bg-base-100 rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
               >
                 {/* Banner */}
                 <img
@@ -52,7 +52,7 @@ const MyClubs = () => {
                     {club.clubName}
                   </h2>
 
-                  <p className="text-gray-600 text-sm line-clamp-2">
+                  <p className="text-base-content/70 text-sm line-clamp-2">
                     {club.description}
                   </p>
 
@@ -72,7 +72,7 @@ const MyClubs = () => {
                       </span>
                     )
                   ) : (
-                    <span className="inline-block mt-2 px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600">
+                    <span className="inline-block mt-2 px-3 py-1 text-sm rounded-full bg-base-300 text-base-content/60">
                       No expiry
                     </span>
                   )}

@@ -30,13 +30,13 @@ const ManagerHome = () => {
         👋 Welcome, {managerName || "Manager"}
       </h2>
 
-      <p className="text-gray-600 text-lg">
+      <p className="text-base-content/70 text-lg">
         Here is an overview of manager activities and quick actions.
       </p>
 
-      <div className="mt-6 p-6 bg-white rounded-xl shadow">
+      <div className="mt-6 p-6 bg-base-100 rounded-xl shadow">
         <h3 className="text-xl font-semibold mb-2">Quick Tips</h3>
-        <ul className="list-disc list-inside text-gray-600">
+        <ul className="list-disc list-inside text-base-content/70">
           <li>Create and manage clubs</li>
           <li>Organize events</li>
           <li>Track event registrations</li>

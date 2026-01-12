@@ -69,7 +69,7 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 border rounded bg-white shadow">
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded bg-base-100 shadow">
       <h2 className="text-3xl font-semibold mb-4 flex items-center gap-2">
         <AiOutlineLogin /> Login
       </h2>
@@ -80,13 +80,13 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <input
           {...register("email", { required: true })}
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded bg-base-100 text-base-content"
           placeholder="Email"
         />
 
         <input
           {...register("password", { required: true })}
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded bg-base-100 text-base-content"
           type="password"
           placeholder="Password"
         />

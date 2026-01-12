@@ -6,7 +6,7 @@ const AdminPayments = () => {
   const {
     data: payments = [],
     isLoading,
-    
+
   } = useQuery({
     queryKey: ["adminPayments"],
     queryFn: async () => {
@@ -27,7 +27,7 @@ const AdminPayments = () => {
     );
   }
 
-  
+
 
   // ===============================
   // 🔥 TOTAL PAYMENTS
@@ -57,7 +57,7 @@ const AdminPayments = () => {
       {/* TOTAL BY CLUB + EVENT */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
         {/* CLUB */}
-        <div className="bg-white rounded-2xl shadow p-6 border border-blue-100">
+        <div className="bg-base-100 rounded-2xl shadow p-6 border border-blue-100">
           <h2 className="text-2xl font-bold text-blue-600">
             🏆 Total Payments by Club
           </h2>
@@ -77,13 +77,13 @@ const AdminPayments = () => {
                 </p>
               </>
             ) : (
-              <p className="text-gray-500">No club payments yet</p>
+              <p className="text-base-content/60">No club payments yet</p>
             )}
           </div>
         </div>
 
         {/* EVENT */}
-        <div className="bg-white rounded-2xl shadow p-6 border border-green-100">
+        <div className="bg-base-100 rounded-2xl shadow p-6 border border-green-100">
           <h2 className="text-2xl font-bold text-green-600">
             🎉 Total Payments by Event
           </h2>
@@ -103,24 +103,24 @@ const AdminPayments = () => {
                 </p>
               </>
             ) : (
-              <p className="text-gray-500">No event payments yet</p>
+              <p className="text-base-content/60">No event payments yet</p>
             )}
           </div>
         </div>
       </div>
 
       {/* ALL PAYMENTS TABLE */}
-      <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
+      <div className="bg-base-100 rounded-2xl shadow p-6 border border-base-200">
         <h2 className="text-3xl font-bold mb-4">📄 All Payment Records</h2>
 
         {payments.length === 0 ? (
-          <p className="text-gray-500 text-center py-10">
+          <p className="text-base-content/60 text-center py-10">
             No payment records found
           </p>
         ) : (
           <table className="min-w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100 text-left">
+              <tr className="bg-base-200 text-left">
                 <th className="p-3">User</th>
                 <th className="p-3">Type</th>
                 <th className="p-3">Club / Event</th>
@@ -134,7 +134,7 @@ const AdminPayments = () => {
               {payments.map((p) => (
                 <tr
                   key={p._id}
-                  className="border-b hover:bg-gray-50 transition"
+                  className="border-b hover:bg-base-200 transition"
                 >
                   <td className="p-3">{p.userEmail}</td>
                   <td className="p-3 capitalize font-semibold text-blue-700">
@@ -151,7 +151,7 @@ const AdminPayments = () => {
                   <td className="p-3">
                     {new Date(p.createdAt).toLocaleString()}
                   </td>
-                  <td className="p-3 text-gray-600">
+                  <td className="p-3 text-base-content/70">
                     {p.paymentIntentId}
                   </td>
                 </tr>

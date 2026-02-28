@@ -2,7 +2,7 @@
 ### Membership & Event Management Platform for Local Clubs
 
 ## 🌐 Live Sit
-(https://toy-topia-bd7f7.web.app/)
+(https://club-go.netlify.app/)
 ## For Test 
 Admin : testadmin@gmail.com
 Passwords : Admin12

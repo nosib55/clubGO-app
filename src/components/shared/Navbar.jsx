@@ -1,17 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import logo from "/logo.svg";
 import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { user, logOut } = useAuth() || {};
 
-  // THEME STATE
-  // Theme logic moved to ThemeContext/ThemeToggle
-
   const handleLogout = () => {
-    logOut().catch(() => { });
+    logOut().catch(() => {});
   };
 
   const navLinks = (
@@ -28,8 +23,8 @@ const Navbar = () => {
             to={path}
             className={({ isActive }) =>
               isActive
-                ? "text-indigo-400 font-semibold border-b-2 border-indigo-400"
-                : "text-gray-300 hover:text-white"
+                ? "text-violet-400 font-semibold"
+                : "text-slate-300 hover:text-white transition-colors duration-200"
             }
           >
             {label}
@@ -40,79 +35,72 @@ const Navbar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-50 shadow bg-gradient-to-r from-slate-900 to-slate-800">
-      <div className="navbar max-w-6xl mx-auto text-white">
+    <div
+      className="sticky top-0 z-50"
+      style={{
+        background: "rgba(10, 10, 26, 0.85)",
+        backdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(139, 92, 246, 0.15)",
+        boxShadow: "0 4px 30px rgba(0,0,0,0.4)",
+      }}
+    >
+      <div className="navbar max-w-7xl mx-auto px-4 text-white">
 
-        {/* LEFT */}
+        {/* LEFT — Logo */}
         <div className="navbar-start">
-          {/* MOBILE MENU */}
           <div className="dropdown md:hidden">
-            <label tabIndex={0} className="btn btn-ghost text-white">
-              ☰
-            </label>
+            <label tabIndex={0} className="btn btn-ghost text-white text-xl">☰</label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 p-4 shadow bg-slate-800 rounded-box w-52 space-y-2"
+              className="menu menu-sm dropdown-content mt-3 p-4 shadow-2xl rounded-2xl w-52 space-y-1"
+              style={{ background: "rgba(15,15,40,0.97)", border: "1px solid rgba(139,92,246,0.2)" }}
             >
               {navLinks}
             </ul>
           </div>
 
-          {/* LOGO */}
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="logo" className="w-36" />
+            <img src="/logo.png" alt="ClubGO" className="h-10 w-auto object-contain" />
           </Link>
         </div>
 
-        {/* CENTER */}
+        {/* CENTER — Nav links */}
         <div className="navbar-center hidden md:flex">
-          <ul className="menu menu-horizontal px-1 space-x-6">
+          <ul className="menu menu-horizontal px-1 gap-1 text-sm font-medium">
             {navLinks}
           </ul>
         </div>
 
-        {/* RIGHT */}
-        <div className="navbar-end space-x-3">
-
-          {/* THEME TOGGLE */}
-          {/* THEME TOGGLE */}
+        {/* RIGHT — Actions */}
+        <div className="navbar-end gap-2">
           <ThemeToggle />
 
           {user ? (
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full ring ring-indigo-400 ring-offset-2">
+                <div
+                  className="w-10 rounded-full"
+                  style={{ ring: "2px solid #8b5cf6" }}
+                >
                   <img
-                    src={
-                      user.photoURL ||
-                      "https://i.ibb.co/PGv8ZzG/user.png"
-                    }
-                    alt="user"
+                    src={user.photoURL || "https://i.ibb.co/PGv8ZzG/user.png"}
+                    alt="avatar"
+                    className="rounded-full border-2 border-violet-500"
                   />
                 </div>
               </label>
-
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 p-3 shadow bg-white text-slate-800 rounded-box w-52"
+                className="menu menu-sm dropdown-content mt-3 p-3 shadow-2xl rounded-2xl w-52 text-slate-800"
+                style={{ background: "#fff" }}
               >
-                <li className="px-2 py-1 text-xs text-gray-500">
+                <li className="px-2 py-1 text-xs text-gray-400 font-medium truncate">
                   {user.displayName || user.email}
                 </li>
-
+                <li><Link to="/profile">Profile</Link></li>
+                <li><Link to="/dashboard">Dashboard</Link></li>
                 <li>
-                  <Link to="/profile">Profile</Link>
-                </li>
-
-                <li>
-                  <Link to="/dashboard">Dashboard</Link>
-                </li>
-
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className="text-red-500 hover:bg-red-50"
-                  >
+                  <button onClick={handleLogout} className="text-red-500 hover:bg-red-50">
                     Logout
                   </button>
                 </li>
@@ -122,16 +110,16 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="btn btn-sm bg-slate-700 text-white hover:bg-slate-600"
+                className="btn btn-sm btn-ghost text-slate-200 hover:text-white border border-slate-600 hover:border-violet-500 transition-all"
               >
                 Login
               </Link>
-
               <Link
                 to="/register"
-                className="btn btn-sm bg-indigo-500 border-none text-white hover:bg-indigo-600"
+                className="btn btn-sm text-white border-none font-semibold px-5"
+                style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)" }}
               >
-                Register
+                Get Started
               </Link>
             </>
           )}

@@ -13,7 +13,14 @@ const Footer = () => {
 
         {/* Brand */}
         <div className="md:col-span-2">
-          <img src="/logo.png" alt="ClubGO" className="h-10 w-auto object-contain mb-4" />
+          <Link to="/" className="flex items-center gap-2 mb-4 hover:opacity-90 transition-opacity">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/30">
+              <span className="text-white text-lg leading-none">✦</span>
+            </div>
+            <span className="text-2xl font-bold tracking-wide text-white">
+              Club<span className="text-violet-400">GO</span>
+            </span>
+          </Link>
           <p className="text-sm leading-relaxed max-w-xs" style={{ color: "rgba(180,180,210,0.6)" }}>
             A powerful platform for discovering clubs, managing memberships, and attending events — all in one place.
           </p>

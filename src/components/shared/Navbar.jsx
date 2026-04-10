@@ -60,7 +60,12 @@ const Navbar = () => {
           </div>
 
           <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="ClubGO" className="h-10 w-auto object-contain" />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/30">
+              <span className="text-white text-lg leading-none">✦</span>
+            </div>
+            <span className="text-xl font-bold tracking-wide text-white">
+              Club<span className="text-violet-400">GO</span>
+            </span>
           </Link>
         </div>
 
